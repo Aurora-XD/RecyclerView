@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +21,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.recyclerview.Data.IMAGE_PATH;
 import static com.example.recyclerview.Data.TYPE_HEADER;
 import static com.example.recyclerview.Data.TYPE_ITEM;
 
@@ -46,22 +50,10 @@ public class ListActivity extends AppCompatActivity {
 
     private void initData(){
         dataList = new ArrayList<>();
-        dataList.add(new Data(TYPE_HEADER,"This is header", null, 0));
-        dataList.add(new Data(TYPE_ITEM,"title1", "desp1", 1));
-        dataList.add(new Data(TYPE_ITEM,"title2", "desp2", 2));
-        dataList.add(new Data(TYPE_ITEM,"title3", "desp3", 3));
-        dataList.add(new Data(TYPE_ITEM,"title4", "desp4", 4));
-        dataList.add(new Data(TYPE_ITEM,"title5", "desp5", 5));
-        dataList.add(new Data(TYPE_ITEM,"title6", "desp6", 6));
-        dataList.add(new Data(TYPE_ITEM,"title7", "desp7", 7));
-        dataList.add(new Data(TYPE_ITEM,"title8", "desp8", 8));
-        dataList.add(new Data(TYPE_ITEM,"title9", "desp9", 9));
-        dataList.add(new Data(TYPE_ITEM,"title10", "desp10", 10));
-        dataList.add(new Data(TYPE_ITEM,"title11", "desp11", 11));
-        dataList.add(new Data(TYPE_ITEM,"title12", "desp12", 12));
-        dataList.add(new Data(TYPE_ITEM,"title13", "desp13", 13));
-        dataList.add(new Data(TYPE_ITEM,"title14", "desp14", 14));
-        dataList.add(new Data(TYPE_ITEM,"title15", "desp15", 15));
+        dataList.add(new Data(TYPE_HEADER,"This is header", null, 0,null));
+        for(int i=1; i<=5; i++){
+            dataList.add(new Data(TYPE_ITEM,"title"+i, "desp"+1, i,IMAGE_PATH+i));
+        }
     }
 
     private class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -69,12 +61,14 @@ public class ListActivity extends AppCompatActivity {
         class ItemViewHolder extends RecyclerView.ViewHolder{
             private View itemView;
             private TextView title,description,number;
+            private ImageView avatar;
             public ItemViewHolder(@NonNull View itemView) {
                 super(itemView);
                 itemView = itemView;
                 title = itemView.findViewById(R.id.title);
                 description = itemView.findViewById(R.id.description);
                 number = itemView.findViewById(R.id.number);
+                avatar = itemView.findViewById(R.id.avatar);
             }
         }
 
@@ -113,6 +107,9 @@ public class ListActivity extends AppCompatActivity {
                         ((ItemViewHolder) holder).title.setText(data.title);
                         ((ItemViewHolder) holder).description.setText(data.description);
                         ((ItemViewHolder) holder).number.setText(String.valueOf(data.number));
+                        Glide.with(getBaseContext())
+                                .load(data.avatar)
+                                .into(((ItemViewHolder) holder).avatar);
                         break;
                     case TYPE_HEADER:
                         ((HeaderViewHolder) holder).header.setText(data.title);
