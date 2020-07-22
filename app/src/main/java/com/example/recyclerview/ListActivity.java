@@ -27,7 +27,8 @@ import static com.example.recyclerview.Data.TYPE_ITEM;
 
 public class ListActivity extends AppCompatActivity {
 
-    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private MyAdapter myAdapter;
 
@@ -48,20 +49,21 @@ public class ListActivity extends AppCompatActivity {
         recyclerView.setAdapter(myAdapter);
     }
 
-    private void initData(){
+    private void initData() {
         dataList = new ArrayList<>();
-        dataList.add(new Data(TYPE_HEADER,"This is header", null, 0,null));
-        for(int i=1; i<=5; i++){
-            dataList.add(new Data(TYPE_ITEM,"title"+i, "desp"+1, i,IMAGE_PATH+i));
+        dataList.add(new Data(TYPE_HEADER, "This is header", null, 0, null));
+        for (int i = 1; i <= 100; i++) {
+            dataList.add(new Data(TYPE_ITEM, "title" + i, "desp" + 1, i, IMAGE_PATH + i));
         }
     }
 
-    private class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    private class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        class ItemViewHolder extends RecyclerView.ViewHolder{
+        class ItemViewHolder extends RecyclerView.ViewHolder {
             private View itemView;
-            private TextView title,description,number;
+            private TextView title, description, number;
             private ImageView avatar;
+
             public ItemViewHolder(@NonNull View itemView) {
                 super(itemView);
                 itemView = itemView;
@@ -72,9 +74,10 @@ public class ListActivity extends AppCompatActivity {
             }
         }
 
-        class HeaderViewHolder extends RecyclerView.ViewHolder{
+        class HeaderViewHolder extends RecyclerView.ViewHolder {
             private View headerView;
             private TextView header;
+
             public HeaderViewHolder(@NonNull View itemView) {
                 super(itemView);
                 headerView = itemView;
@@ -85,7 +88,7 @@ public class ListActivity extends AppCompatActivity {
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, @NonNull int viewType) {
-            switch (viewType){
+            switch (viewType) {
                 case TYPE_ITEM:
                     View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
                     ItemViewHolder itemViewHolder = new ItemViewHolder(inflate);
@@ -101,8 +104,8 @@ public class ListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             Data data = dataList.get(position);
-            if(Objects.nonNull(data)){
-                switch (data.type){
+            if (Objects.nonNull(data)) {
+                switch (data.type) {
                     case TYPE_ITEM:
                         ((ItemViewHolder) holder).title.setText(data.title);
                         ((ItemViewHolder) holder).description.setText(data.description);
