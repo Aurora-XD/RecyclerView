@@ -1,6 +1,4 @@
 
-1. RecyclerView
-![Image text](image/recycle_view.png)
+1. Multiple RecyclerView - header
+![Image text](image/header.png)
 
-2. ListActivity
-![Image text](image/list.png)
