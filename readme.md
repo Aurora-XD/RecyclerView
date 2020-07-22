@@ -1,4 +1,4 @@
 
-1. Multiple RecyclerView - header
-![Image text](image/header.png)
+1. Load avatar
+![Image text](image/avatar.png)
 
