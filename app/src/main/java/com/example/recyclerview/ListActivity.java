@@ -13,9 +13,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.recyclerview.Data.TYPE_HEADER;
+import static com.example.recyclerview.Data.TYPE_ITEM;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -42,29 +46,30 @@ public class ListActivity extends AppCompatActivity {
 
     private void initData(){
         dataList = new ArrayList<>();
-        dataList.add(new Data("title1", "desp1", 1));
-        dataList.add(new Data("title2", "desp2", 2));
-        dataList.add(new Data("title3", "desp3", 3));
-        dataList.add(new Data("title4", "desp4", 4));
-        dataList.add(new Data("title5", "desp5", 5));
-        dataList.add(new Data("title6", "desp6", 6));
-        dataList.add(new Data("title7", "desp7", 7));
-        dataList.add(new Data("title8", "desp8", 8));
-        dataList.add(new Data("title9", "desp9", 9));
-        dataList.add(new Data("title10", "desp10", 10));
-        dataList.add(new Data("title11", "desp11", 11));
-        dataList.add(new Data("title12", "desp12", 12));
-        dataList.add(new Data("title13", "desp13", 13));
-        dataList.add(new Data("title14", "desp14", 14));
-        dataList.add(new Data("title15", "desp15", 15));
+        dataList.add(new Data(TYPE_HEADER,"This is header", null, 0));
+        dataList.add(new Data(TYPE_ITEM,"title1", "desp1", 1));
+        dataList.add(new Data(TYPE_ITEM,"title2", "desp2", 2));
+        dataList.add(new Data(TYPE_ITEM,"title3", "desp3", 3));
+        dataList.add(new Data(TYPE_ITEM,"title4", "desp4", 4));
+        dataList.add(new Data(TYPE_ITEM,"title5", "desp5", 5));
+        dataList.add(new Data(TYPE_ITEM,"title6", "desp6", 6));
+        dataList.add(new Data(TYPE_ITEM,"title7", "desp7", 7));
+        dataList.add(new Data(TYPE_ITEM,"title8", "desp8", 8));
+        dataList.add(new Data(TYPE_ITEM,"title9", "desp9", 9));
+        dataList.add(new Data(TYPE_ITEM,"title10", "desp10", 10));
+        dataList.add(new Data(TYPE_ITEM,"title11", "desp11", 11));
+        dataList.add(new Data(TYPE_ITEM,"title12", "desp12", 12));
+        dataList.add(new Data(TYPE_ITEM,"title13", "desp13", 13));
+        dataList.add(new Data(TYPE_ITEM,"title14", "desp14", 14));
+        dataList.add(new Data(TYPE_ITEM,"title15", "desp15", 15));
     }
 
-    private class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
+    private class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-        class MyViewHolder extends RecyclerView.ViewHolder{
+        class ItemViewHolder extends RecyclerView.ViewHolder{
             private View itemView;
             private TextView title,description,number;
-            public MyViewHolder(@NonNull View itemView) {
+            public ItemViewHolder(@NonNull View itemView) {
                 super(itemView);
                 itemView = itemView;
                 title = itemView.findViewById(R.id.title);
@@ -73,24 +78,57 @@ public class ListActivity extends AppCompatActivity {
             }
         }
 
+        class HeaderViewHolder extends RecyclerView.ViewHolder{
+            private View headerView;
+            private TextView header;
+            public HeaderViewHolder(@NonNull View itemView) {
+                super(itemView);
+                headerView = itemView;
+                header = itemView.findViewById(R.id.header);
+            }
+        }
+
         @NonNull
         @Override
-        public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
-            MyViewHolder myViewHolder = new MyViewHolder(inflate);
-            return myViewHolder;
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, @NonNull int viewType) {
+            switch (viewType){
+                case TYPE_ITEM:
+                    View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
+                    ItemViewHolder itemViewHolder = new ItemViewHolder(inflate);
+                    return itemViewHolder;
+                case TYPE_HEADER:
+                    View inflate1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.header, parent, false);
+                    HeaderViewHolder headerViewHolder = new HeaderViewHolder(inflate1);
+                    return headerViewHolder;
+            }
+            return null;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-            holder.title.setText(dataList.get(position).title);
-            holder.description.setText(dataList.get(position).description);
-            holder.number.setText(String.valueOf(dataList.get(position).number));
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            Data data = dataList.get(position);
+            if(Objects.nonNull(data)){
+                switch (data.type){
+                    case TYPE_ITEM:
+                        ((ItemViewHolder) holder).title.setText(data.title);
+                        ((ItemViewHolder) holder).description.setText(data.description);
+                        ((ItemViewHolder) holder).number.setText(String.valueOf(data.number));
+                        break;
+                    case TYPE_HEADER:
+                        ((HeaderViewHolder) holder).header.setText(data.title);
+                        break;
+                }
+            }
         }
 
         @Override
         public int getItemCount() {
             return dataList.size();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return dataList.get(position).type;
         }
     }
 }
