@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +32,9 @@ public class ListActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private MyAdapter myAdapter;
+    private static Context context;
 
-    private List<Data> dataList;
+    private static List<Data> dataList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class ListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         initData();
+        context = getApplicationContext();
         myAdapter = new MyAdapter();
         recyclerView.setAdapter(myAdapter);
     }
@@ -57,9 +60,9 @@ public class ListActivity extends AppCompatActivity {
         }
     }
 
-    private class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        class ItemViewHolder extends RecyclerView.ViewHolder {
+        public static class ItemViewHolder extends RecyclerView.ViewHolder {
             private View itemView;
             private TextView title, description, number;
             private ImageView avatar;
@@ -74,7 +77,7 @@ public class ListActivity extends AppCompatActivity {
             }
         }
 
-        class HeaderViewHolder extends RecyclerView.ViewHolder {
+       public static class HeaderViewHolder extends RecyclerView.ViewHolder {
             private View headerView;
             private TextView header;
 
@@ -110,7 +113,7 @@ public class ListActivity extends AppCompatActivity {
                         ((ItemViewHolder) holder).title.setText(data.title);
                         ((ItemViewHolder) holder).description.setText(data.description);
                         ((ItemViewHolder) holder).number.setText(String.valueOf(data.number));
-                        Glide.with(getBaseContext())
+                        Glide.with(context)
                                 .load(data.avatar)
                                 .into(((ItemViewHolder) holder).avatar);
                         break;
